@@ -19,9 +19,13 @@ public class JwtTokenProvider {
     @Value("${finvest.jwt.expiration-ms:86400000}")
     private long jwtExpirationMs;
 
-    private SecretKey getSigningKey() {
+    private SecretKey getSignKey() {
         byte[] keyBytes = jwtSecret.getBytes(StandardCharsets.UTF_8);
         return Keys.hmacShaKeyFor(keyBytes);
+    }
+
+    private SecretKey getSigningKey() {
+        return getSignKey();
     }
 
     public String generateToken(String username, String role) {
