@@ -67,7 +67,6 @@ def test_settings_endpoints():
     data = res.json()
     assert "providers" in data
     assert "gemini" in data["providers"]
-    assert "openai" in data["providers"]
     assert "yahoo_finance" in data["providers"]
 
     # Test key update

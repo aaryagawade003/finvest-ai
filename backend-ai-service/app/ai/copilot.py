@@ -157,7 +157,7 @@ async def generate_copilot_response_async(query: CopilotQuery) -> CopilotRespons
     elif llm_res.get("status") == "NO_KEY":
         key_notice = (
             f"> ℹ️ **Tip**: No external LLM key is currently configured. FinVest AI is running on its built-in quantitative analytics engine.\n"
-            f"> *To enable live Google Gemini (1.5/2.0 Flash) or OpenAI (GPT-4o), click **API Keys & Integrations** in the header.*\n\n---\n\n"
+            f"> *To enable live Google Gemini (2.5 Flash), click **API Keys & Integrations** in the header.*\n\n---\n\n"
         )
 
     # Standard quantitative fallback answers

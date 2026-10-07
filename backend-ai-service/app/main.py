@@ -81,14 +81,14 @@ def health_check():
 
 @app.get("/api/settings/status")
 def get_settings_status():
-    """Returns connectivity and configuration status for Gemini, OpenAI, Finnhub, Alpha Vantage, and Yahoo Finance."""
+    """Returns connectivity and configuration status for Gemini and Yahoo Finance."""
     return settings_manager.get_status()
 
 @app.post("/api/settings/keys")
 def update_api_keys(payload: Dict[str, str] = Body(...)):
     """Updates API keys at runtime and persists them to .env."""
     for k, v in payload.items():
-        if k in ["GEMINI_API_KEY", "OPENAI_API_KEY", "FINNHUB_API_KEY", "ALPHA_VANTAGE_API_KEY", "DEFAULT_LLM_PROVIDER"]:
+        if k in ["GEMINI_API_KEY", "DEFAULT_LLM_PROVIDER"]:
             settings_manager.set_key(k, v.strip())
     return {
         "status": "UPDATED",
@@ -99,7 +99,7 @@ def update_api_keys(payload: Dict[str, str] = Body(...)):
 async def test_api_key(payload: Dict[str, str] = Body(...)):
     """Live probe test for an API key before saving."""
     provider = payload.get("provider", "")
-    key = payload.get("key", "").strip()
+    key = payload.get("key", "").strip() or settings_manager.get_key("GEMINI_API_KEY")
     if not key:
         raise HTTPException(status_code=400, detail="API key is required for testing")
     result = await settings_manager.test_key(provider, key)
@@ -114,7 +114,7 @@ def get_market_quotes():
 
 @app.get("/api/market/live-quote/{symbol}")
 async def get_live_quote(symbol: str):
-    """Fetches real-time market quote from Yahoo Finance, Finnhub, or Alpha Vantage."""
+    """Fetches real-time market quote from Yahoo Finance (zero-key)."""
     return await live_market_service.get_live_quote(symbol)
 
 @app.get("/api/market/news/{symbol}")
@@ -211,7 +211,7 @@ def simulate_scenario(request: WhatIfRequest):
 
 @app.post("/api/copilot/chat", response_model=CopilotResponse)
 async def copilot_chat(query: CopilotQuery):
-    """Conversational AI Copilot powered by Google Gemini, OpenAI, and live market RAG."""
+    """Conversational AI Copilot powered exclusively by Google Gemini and live market RAG."""
     if not query.portfolio and query.portfolio_id:
         for p_data in _active_portfolios.values():
             if p_data["id"] == query.portfolio_id:

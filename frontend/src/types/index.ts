@@ -158,10 +158,10 @@ export interface SettingsStatus {
   active_llm_provider: string;
   providers: {
     gemini: ProviderStatus;
-    openai: ProviderStatus;
-    finnhub: ProviderStatus;
-    alpha_vantage: ProviderStatus;
     yahoo_finance: ProviderStatus;
+    openai?: ProviderStatus;
+    finnhub?: ProviderStatus;
+    alpha_vantage?: ProviderStatus;
   };
 }
 
