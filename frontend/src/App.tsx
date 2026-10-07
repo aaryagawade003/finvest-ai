@@ -17,6 +17,7 @@ import { AlertsCenter } from './components/AlertsCenter';
 import { ReportGeneratorModal } from './components/ReportGeneratorModal';
 import { TransactionModal } from './components/TransactionModal';
 import { SettingsModal } from './components/SettingsModal';
+import { ResearchSuite } from './components/ResearchSuite';
 import { Sparkles, Activity, ShieldCheck, Zap } from 'lucide-react';
 
 export function App() {
@@ -306,7 +307,12 @@ export function App() {
           <AiCopilotChat portfolio={activePortfolio} />
         )}
 
-        {/* TAB 5: ALERTS CENTER */}
+        {/* TAB 5: RESEARCH LAB */}
+        {activeTab === 'research' && (
+          <ResearchSuite portfolio={activePortfolio} />
+        )}
+
+        {/* TAB 6: ALERTS CENTER */}
         {activeTab === 'alerts' && (
           <AlertsCenter alerts={activePortfolio.alerts} />
         )}

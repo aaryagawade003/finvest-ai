@@ -135,3 +135,147 @@ class ReportRequest(BaseModel):
     portfolio_id: Optional[str] = None
     portfolio: Optional[PortfolioSummary] = None
     include_ai_commentary: bool = True
+
+# --- FinVest-R Research Schemas ---
+
+class OptimizationStrategy(str, Enum):
+    EQUAL_WEIGHT = "EQUAL_WEIGHT"
+    MEAN_VARIANCE = "MEAN_VARIANCE"
+    MIN_VOLATILITY = "MIN_VOLATILITY"
+    MAX_SHARPE = "MAX_SHARPE"
+    RISK_PARITY = "RISK_PARITY"
+    FINVEST_R = "FINVEST_R"
+
+class OptimizationResult(BaseModel):
+    strategy: str
+    strategy_name: str
+    weights: Dict[str, float]  # symbol -> weight percentage (0-100)
+    sector_weights: Dict[str, float]
+    expected_return: float
+    expected_volatility: float
+    sharpe_ratio: float
+    diversification_score: float
+    max_drawdown: float
+    risk_contributions: Dict[str, float]  # Euler risk contribution %
+    mathematical_formula: str
+    objective_value: float
+    ai_explanation: Optional[str] = None
+
+class OptimizationComparisonResponse(BaseModel):
+    strategies: Dict[str, OptimizationResult]
+    efficient_frontier_points: List[Dict[str, float]]
+    best_strategy: str
+    summary_explanation: str
+    mathematical_proof: str
+
+class ScenarioImpact(BaseModel):
+    scenario_id: str
+    name: str
+    description: str
+    macro_shock_details: Dict[str, str]
+    metrics_table: List[Dict[str, Any]]
+    asset_impacts: Dict[str, float]
+    ai_attribution: str
+
+class StressTestResponse(BaseModel):
+    scenarios: List[ScenarioImpact]
+    resilience_ranking: List[Dict[str, Any]]
+    research_takeaways: str
+
+class MonteCarloResult(BaseModel):
+    num_simulations: int
+    horizon_days: int
+    strategy_metrics: Dict[str, Dict[str, Any]]
+    sample_paths: Dict[str, List[List[float]]]
+    terminal_wealth_percentiles: Dict[str, Dict[str, float]]
+    research_conclusion: str
+
+class BacktestMetrics(BaseModel):
+    strategy_name: str
+    cagr: float
+    volatility: float
+    sharpe: float
+    sortino: float
+    max_drawdown: float
+    calmar_ratio: float
+    var_95: float
+    cvar_95: float
+    win_rate: float
+    cumulative_return: float
+
+class BacktestComparisonResponse(BaseModel):
+    train_test_windows: List[Dict[str, str]]
+    results_table: List[BacktestMetrics]
+    annual_returns_breakdown: List[Dict[str, Any]]
+    research_insights: str
+
+class RiskAttributionItem(BaseModel):
+    symbol: str
+    name: str
+    weight: float
+    volatility: float
+    marginal_risk_contribution: float
+    percentage_risk_contribution: float
+    traceability: Dict[str, str]
+
+class RiskAttributionReport(BaseModel):
+    total_volatility: float
+    components: List[RiskAttributionItem]
+    top_risk_driver: str
+    concentration_risk_summary: str
+    recommended_action: str
+
+class KnowledgeGraphNode(BaseModel):
+    id: str
+    label: str
+    type: str  # Company, Sector, MacroFactor, AssetClass, FinancialEvent
+    properties: Dict[str, Any] = {}
+
+class KnowledgeGraphEdge(BaseModel):
+    source: str
+    target: str
+    relation: str  # belongs_to, affected_by, correlated_with, reported, hedges
+    weight: float = 1.0
+
+class KnowledgeGraphData(BaseModel):
+    nodes: List[KnowledgeGraphNode]
+    edges: List[KnowledgeGraphEdge]
+    entity_insights: Optional[Dict[str, Any]] = None
+
+class UncertaintyEstimate(BaseModel):
+    metric_name: str
+    point_estimate: float
+    ci_lower_95: float
+    ci_upper_95: float
+    standard_error: float
+    confidence_score: float
+    method: str
+
+class UncertaintyReport(BaseModel):
+    metrics: List[UncertaintyEstimate]
+    bootstrap_samples: int
+    research_note: str
+
+class InvestorProfileType(str, Enum):
+    CONSERVATIVE = "CONSERVATIVE"
+    MODERATE = "MODERATE"
+    AGGRESSIVE = "AGGRESSIVE"
+
+class InvestorProfileComparison(BaseModel):
+    profiles: Dict[str, Dict[str, Any]]
+    hypothesis_testing: Dict[str, Any]
+
+class BenchmarkEvaluationResult(BaseModel):
+    model_name: str
+    model_tag: str
+    numerical_accuracy: float
+    citation_accuracy: float
+    hallucination_rate: float
+    risk_explanation_score: float
+    sample_evaluations: List[Dict[str, Any]]
+
+class BenchmarkSuiteResponse(BaseModel):
+    benchmark_size: int
+    models: List[BenchmarkEvaluationResult]
+    research_verdict: str
+

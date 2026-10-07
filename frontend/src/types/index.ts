@@ -183,3 +183,194 @@ export interface LiveQuote {
   low?: number;
   currency: string;
 }
+
+// --- FinVest-R Research Interfaces ---
+
+export interface OptimizationResult {
+  strategy: string;
+  strategy_name: string;
+  weights: Record<string, number>;
+  sector_weights: Record<string, number>;
+  expected_return: number;
+  expected_volatility: number;
+  sharpe_ratio: number;
+  diversification_score: number;
+  max_drawdown: number;
+  risk_contributions: Record<string, number>;
+  mathematical_formula: string;
+  objective_value: number;
+  ai_explanation?: string;
+}
+
+export interface OptimizationComparisonResponse {
+  strategies: Record<string, OptimizationResult>;
+  efficient_frontier_points: Array<{ volatility: number; return: number; sharpe: number }>;
+  best_strategy: string;
+  summary_explanation: string;
+  mathematical_proof: string;
+}
+
+export interface ScenarioImpact {
+  scenario_id: string;
+  name: string;
+  description: string;
+  macro_shock_details: Record<string, string>;
+  metrics_table: Array<{
+    metric: string;
+    original: string;
+    shock: string;
+    delta: string;
+    negative: boolean;
+  }>;
+  asset_impacts: Record<string, number>;
+  ai_attribution: string;
+}
+
+export interface StressTestResponse {
+  scenarios: ScenarioImpact[];
+  resilience_ranking: Array<{
+    scenario_id: string;
+    name: string;
+    capital_impact_pct: number;
+    shocked_sharpe: number;
+    resilience_rating: string;
+  }>;
+  research_takeaways: string;
+}
+
+export interface MonteCarloResult {
+  num_simulations: number;
+  horizon_days: number;
+  strategy_metrics: Record<string, {
+    name: string;
+    expected_return: number;
+    volatility: number;
+    sharpe_ratio: number;
+    var_95: number;
+    cvar_95: number;
+    var_99: number;
+    cvar_99: number;
+    probability_of_loss: number;
+    probability_exceeding_target: number;
+    expected_mdd: number;
+    worst_case_mdd_95: number;
+    median_terminal_wealth: number;
+  }>;
+  sample_paths: Record<string, number[][]>;
+  terminal_wealth_percentiles: Record<string, {
+    p5: number;
+    p25: number;
+    p50: number;
+    p75: number;
+    p95: number;
+  }>;
+  research_conclusion: string;
+}
+
+export interface BacktestMetrics {
+  strategy_name: string;
+  cagr: number;
+  volatility: number;
+  sharpe: number;
+  sortino: number;
+  max_drawdown: number;
+  calmar_ratio: number;
+  var_95: number;
+  cvar_95: number;
+  win_rate: number;
+  cumulative_return: number;
+}
+
+export interface BacktestComparisonResponse {
+  train_test_windows: Array<{ window_id: string; train: string; test: string; market_regime: string }>;
+  results_table: BacktestMetrics[];
+  annual_returns_breakdown: Array<Record<string, any>>;
+  research_insights: string;
+}
+
+export interface RiskAttributionItem {
+  symbol: string;
+  name: string;
+  weight: number;
+  volatility: number;
+  marginal_risk_contribution: number;
+  percentage_risk_contribution: number;
+  traceability: {
+    data_point: string;
+    calculation: string;
+    source: string;
+    evidence: string;
+  };
+}
+
+export interface RiskAttributionReport {
+  total_volatility: number;
+  components: RiskAttributionItem[];
+  top_risk_driver: string;
+  concentration_risk_summary: string;
+  recommended_action: string;
+}
+
+export interface KnowledgeGraphNode {
+  id: string;
+  label: string;
+  type: string;
+  properties?: Record<string, any>;
+}
+
+export interface KnowledgeGraphEdge {
+  source: string;
+  target: string;
+  relation: string;
+  weight: number;
+}
+
+export interface KnowledgeGraphData {
+  nodes: KnowledgeGraphNode[];
+  edges: KnowledgeGraphEdge[];
+  entity_insights?: Record<string, any>;
+}
+
+export interface UncertaintyEstimate {
+  metric_name: string;
+  point_estimate: number;
+  ci_lower_95: number;
+  ci_upper_95: number;
+  standard_error: number;
+  confidence_score: number;
+  method: string;
+}
+
+export interface UncertaintyReport {
+  metrics: UncertaintyEstimate[];
+  bootstrap_samples: number;
+  research_note: string;
+}
+
+export interface InvestorProfileComparison {
+  profiles: Record<string, any>;
+  hypothesis_testing: Record<string, any>;
+}
+
+export interface BenchmarkEvaluationResult {
+  model_name: string;
+  model_tag: string;
+  numerical_accuracy: number;
+  citation_accuracy: number;
+  hallucination_rate: number;
+  risk_explanation_score: number;
+  sample_evaluations: Array<{
+    question: string;
+    response: string;
+    accurate: boolean;
+    hallucination: boolean;
+    note: string;
+  }>;
+}
+
+export interface BenchmarkSuiteResponse {
+  benchmark_size: number;
+  models: BenchmarkEvaluationResult[];
+  research_verdict: string;
+}
+

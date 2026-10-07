@@ -7,7 +7,8 @@ import {
   Sliders, 
   Bot, 
   FileText,
-  Key
+  Key,
+  FlaskConical
 } from 'lucide-react';
 import { PortfolioSummary } from '../types';
 
@@ -104,6 +105,17 @@ export const Navbar: React.FC<NavbarProps> = ({
             >
               <Bot className="w-3.5 h-3.5" />
               <span>AI Copilot</span>
+            </button>
+            <button
+              onClick={() => setActiveTab('research')}
+              className={`px-3 py-1.5 rounded-lg text-sm font-medium transition-colors flex items-center space-x-1.5 ${
+                activeTab === 'research' 
+                  ? 'bg-indigo-900/70 text-indigo-300 border border-indigo-500/40 shadow-sm' 
+                  : 'text-indigo-300/80 hover:text-white hover:bg-indigo-950/40'
+              }`}
+            >
+              <FlaskConical className="w-3.5 h-3.5 text-indigo-400" />
+              <span>Research Lab</span>
             </button>
             <button
               onClick={() => setActiveTab('alerts')}

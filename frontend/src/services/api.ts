@@ -6,7 +6,16 @@ import {
   Transaction,
   SettingsStatus,
   TestKeyResult,
-  LiveQuote
+  LiveQuote,
+  OptimizationComparisonResponse,
+  StressTestResponse,
+  MonteCarloResult,
+  BacktestComparisonResponse,
+  RiskAttributionReport,
+  UncertaintyReport,
+  KnowledgeGraphData,
+  BenchmarkSuiteResponse,
+  InvestorProfileComparison
 } from '../types';
 
 const API_BASE = '/api';
@@ -377,3 +386,80 @@ function getFallbackReport(portfolio?: PortfolioSummary): ExecutiveReport {
     ]
   };
 }
+
+// ==================== FINVEST-R RESEARCH API CLIENT ====================
+
+export async function fetchOptimizationComparison(riskProfile = 'MODERATE'): Promise<OptimizationComparisonResponse> {
+  const res = await fetch(`${API_BASE}/research/optimize`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ risk_profile: riskProfile })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchStressTest(portfolioId?: string): Promise<StressTestResponse> {
+  const res = await fetch(`${API_BASE}/research/stress-test`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ portfolio_id: portfolioId })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchMonteCarlo(numSims = 25000, horizonDays = 252): Promise<MonteCarloResult> {
+  const res = await fetch(`${API_BASE}/research/monte-carlo`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ num_simulations: numSims, horizon_days: horizonDays })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchWalkForwardBacktest(): Promise<BacktestComparisonResponse> {
+  const res = await fetch(`${API_BASE}/research/backtest`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchRiskAttribution(portfolioId?: string): Promise<RiskAttributionReport> {
+  const res = await fetch(`${API_BASE}/research/risk-attribution`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ portfolio_id: portfolioId })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchUncertaintyEstimates(portfolioId?: string): Promise<UncertaintyReport> {
+  const res = await fetch(`${API_BASE}/research/uncertainty`, {
+    method: 'POST',
+    headers: { 'Content-Type': 'application/json' },
+    body: JSON.stringify({ portfolio_id: portfolioId })
+  });
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchKnowledgeGraph(): Promise<KnowledgeGraphData> {
+  const res = await fetch(`${API_BASE}/research/knowledge-graph`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchBenchmarkSuite(): Promise<BenchmarkSuiteResponse> {
+  const res = await fetch(`${API_BASE}/research/benchmark`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
+export async function fetchInvestorPersonalization(): Promise<InvestorProfileComparison> {
+  const res = await fetch(`${API_BASE}/research/personalize`);
+  if (!res.ok) throw new Error(`HTTP ${res.status}`);
+  return await res.json();
+}
+
